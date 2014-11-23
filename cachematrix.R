@@ -59,14 +59,7 @@ cacheSolve <- function(x, ...) {
     data <- x$get()
 
     ## Calculate the inverse using matrix multiplication
-    ##Multiplies two matrices, if they are conformable. 
-    ##If one argument is a vector, it will be promoted to either a 
-    ## row or column matrix to make the two arguments conformable. 
-    ## If both are vectors of the same length, 
-    ## it will return the inner product (as a matrix).
-    ##Usage
-    ##x %*% y
-    inversedMatrix <- solve(data) %*% data
+    inversedMatrix <- solve(data) 
 
     ## Set the inverse to the object
     x$setInverse(inversedMatrix)
