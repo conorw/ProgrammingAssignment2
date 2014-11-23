@@ -6,35 +6,35 @@
 
 ## makeCacheMatrix: This function creates a special "matrix" object that 
 ## can cache its inverse.
-makeCacheMatrix <- function( m = matrix() ) {
+makeCacheMatrix <- function( savedMatrix = matrix() ) {
 
-	## Initialize the inverse property
-    i <- NULL
+	  ## initproperty to null to signify thatit has not been set yet
+    inverseProp <- NULL
 
-    ## Method to set the matrix
+    ## function to set the matrix
     set <- function( matrix ) {
-            m <<- matrix
-            i <<- NULL
+            savedMatrix <<- matrix
+            inverseProp <<- NULL
     }
 
     ## Method the get the matrix
     get <- function() {
-    	## Return the matrix
-    	m
+    	## Return the saved matrix
+      savedMatrix
     }
 
-    ## Method to set the inverse of the matrix
+    ## Set the inverse of the matrix
     setInverse <- function(inverse) {
-        i <<- inverse
+      inverseProp <<- inverse
     }
 
-    ## Method to get the inverse of the matrix
+    ## Get the inverse
     getInverse <- function() {
-        ## Return the inverse property
-        i
+        ## ret inverse property
+      inverseProp
     }
 
-    ## Return a list of the methods
+    ## Return a list with the added functions 
     list(set = set, get = get,
          setInverse = setInverse,
          getInverse = getInverse)
@@ -48,23 +48,29 @@ makeCacheMatrix <- function( m = matrix() ) {
 cacheSolve <- function(x, ...) {
 
     ## Return a matrix that is the inverse of 'x'
-    m <- x$getInverse()
+    inversedMatrix <- x$getInverse()
 
-    ## Just return the inverse if its already set
-    if( !is.null(m) ) {
-            message("getting cached data")
-            return(m)
+    ## return cached value if it has already been set
+    if( !is.null(inversedMatrix) ) {
+            return(inversedMatrix)
     }
 
     ## Get the matrix from our object
     data <- x$get()
 
     ## Calculate the inverse using matrix multiplication
-    m <- solve(data) %*% data
+    ##Multiplies two matrices, if they are conformable. 
+    ##If one argument is a vector, it will be promoted to either a 
+    ## row or column matrix to make the two arguments conformable. 
+    ## If both are vectors of the same length, 
+    ## it will return the inner product (as a matrix).
+    ##Usage
+    ##x %*% y
+    inversedMatrix <- solve(data) %*% data
 
     ## Set the inverse to the object
-    x$setInverse(m)
+    x$setInverse(inversedMatrix)
 
-    ## Return the matrix
-    m
+    ## now return the inversed matrix
+    inversedMatrix
 }
